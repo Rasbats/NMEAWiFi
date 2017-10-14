@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="1"
+        android:key="host"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Provide the ip address of the NMEA device"
+        android:title="NMEA Host" />
+    <EditTextPreference
+        android:defaultValue="1"
+        android:key="port"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Provide the ip port of the NMEA device"
+        android:title="NMEA Port" />
+
+</PreferenceScreen>
