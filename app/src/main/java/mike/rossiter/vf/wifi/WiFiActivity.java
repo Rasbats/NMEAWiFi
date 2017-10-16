@@ -52,12 +52,13 @@ import java.util.zip.ZipOutputStream;
 import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
+
 import android.view.View.OnClickListener;
 
 /**
  * Simple UI demonstrating how to open a serial communication link to a
  * remote host over WiFi, send and receive messages, and update the display.
- *
+ * <p>
  * Author: Hayk Martirosyan
  */
 
@@ -75,7 +76,7 @@ public class WiFiActivity extends Activity {
     boolean isNMEAConnected;
     boolean isDisconnected;
     public static String ip_host;
-    public static String  ip_port;
+    public static String ip_port;
 
 
     // AsyncTask object that manages the connection in a separate thread
@@ -100,16 +101,15 @@ public class WiFiActivity extends Activity {
     Button buttonWiFi;
 
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
-    public void onPublishUpdate(String... values){
+    public void onPublishUpdate(String... values) {
 
-        Toast.makeText(getApplicationContext(),"error",
+        Toast.makeText(getApplicationContext(), "error",
                 Toast.LENGTH_LONG).show();
     }
 
@@ -123,7 +123,7 @@ public class WiFiActivity extends Activity {
                 startActivity(intent);
 
                 //Toast.makeText(getApplicationContext(),"here",
-                      //  Toast.LENGTH_LONG).show();
+                //  Toast.LENGTH_LONG).show();
 
                 return true;
             }
@@ -187,10 +187,11 @@ public class WiFiActivity extends Activity {
                 size += getFolderSize(file);
             }
         } else {
-            size=f.length();
+            size = f.length();
         }
         return size;
     }
+
     /*
 
     public String getFileSize(File file){
@@ -205,11 +206,11 @@ public class WiFiActivity extends Activity {
     }
 */
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         ReadPreferences();
-       // Toast.makeText(getApplicationContext(), "here",
-                //Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), "here",
+        //Toast.LENGTH_LONG).show();
     }
 
     public void ReadPreferences() {
@@ -219,36 +220,36 @@ public class WiFiActivity extends Activity {
         ip_port = preferences.getString("port", "");
         ip_host = preferences.getString("host", "");
 
-        if (ip_port == ""){
+        if (ip_port.equals("")) {
             alert.showAlertDialog(this,
                     "Missing NMEA Connection Data",
                     "Please enter the NMEA Device Port using Preferences", false);
 
         }
 
-        if (ip_host == "") {
+        if (ip_host.equals("")) {
             alert.showAlertDialog(this,
                     "Missing NMEA Connection Data",
                     "Please enter the NMEA Device Host using Preferences", false);
 
         }
 
-            editTextAddress.setText(ip_host);
-            editTextPort.setText((ip_port));
+        editTextAddress.setText(ip_host);
+        editTextPort.setText((ip_port));
 
-       // Toast.makeText(this, ip_port,
-              //  Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, ip_port,
+        //  Toast.LENGTH_LONG).show();
     }
 
 
-    public void openWifiSettings(){
+    public void openWifiSettings() {
 
         final Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         final ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.wifi.WifiSettings");
         intent.setComponent(cn);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity( intent);
+        startActivity(intent);
 
     }
 /*
@@ -286,6 +287,7 @@ public class WiFiActivity extends Activity {
     }
 
     */
+
     /**
      * Helper function, print a status to both the UI and program log.
      */
@@ -314,13 +316,12 @@ public class WiFiActivity extends Activity {
      * Try to start a connection with the specified remote host.
      */
     public void connectButtonPressed(View v) {
-
         isDisconnected = false;
 
         String ip_port = preferences.getString("port", "");
         final String host = preferences.getString("host", "");
 
-        if (ip_port == "" || host == "") {
+        if (ip_port.equals("") || host.equals("")) {
             alert.showAlertDialog(this,
                     "Missing NMEA Connection Data",
                     "Please enter the NMEA Device Address/Port using Preferences", false);
@@ -334,21 +335,18 @@ public class WiFiActivity extends Activity {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                    myNMEATest = new TestNMEAConnectionTask(host, port);
-                    myNMEATest.execute();
-                }
+                myNMEATest = new TestNMEAConnectionTask(host, port);
+                myNMEATest.execute();
+            }
         });
 
         myNMEATest = null;
 
         if (!isNMEAConnected) {
-
             return;
-
         } else {
-
+            //Set the status to connected
             connected();
-
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -362,7 +360,6 @@ public class WiFiActivity extends Activity {
         }
 
         executorService.shutdown();
-
     }
 
     /**
@@ -410,10 +407,9 @@ public class WiFiActivity extends Activity {
             filearray[0] = testFile.getAbsolutePath();
 
 
-
             File sdCardDir = Environment.getExternalStorageDirectory();
 
-            File directory = new File(sdCardDir+File.separator+"venturefarther");
+            File directory = new File(sdCardDir + File.separator + "venturefarther");
 
             if (!directory.exists()) {
                 directory.mkdirs();
@@ -432,8 +428,7 @@ public class WiFiActivity extends Activity {
             }
 */
             //Toast.makeText(getApplicationContext(),"The File Size is " + fs,
-           // Toast.LENGTH_LONG).show();
-
+            // Toast.LENGTH_LONG).show();
 
             zip(filearray, zipFile.getAbsolutePath());
             testFile.delete();
@@ -450,7 +445,6 @@ public class WiFiActivity extends Activity {
                     null,
                     null);
         } catch (IOException e) {
-
             //Toast.makeText(getApplicationContext(),"unable to write!",
             //Toast.LENGTH_LONG).show();
             Log.e("ReadWriteFile", "Unable to write to the TestFile.txt file.");
@@ -458,12 +452,11 @@ public class WiFiActivity extends Activity {
     }
 
     private void FileWrite(String m) {
-
         try {
             myWriter.write(m);
             myWriter.write("\n");
         } catch (IOException e) {
-            Log.e("ReadWriteFile", "Unable to write.");
+            Log.e("VFRecorder", "ReadWriteFile Exception", e);
         }
     }
 
@@ -493,44 +486,32 @@ public class WiFiActivity extends Activity {
 
             out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("VFRecorder", "exception", e);
         }
     }
 
     /**
      * The method attached to the test internet method
-     *
      */
-
-
     public void onTestNMEA(View v) {
-
         // Location of the NMEA host
-
-        String address = preferences.getString("host","");
-        String port = preferences.getString("port","");
+        String address = preferences.getString("host", "");
+        String port = preferences.getString("port", "");
 
         try {
-
-            if (port == "" || address == ""){
+            if (port.equals("") || address.equals("")) {
                 alert.showAlertDialog(this,
                         "Missing NMEA Connection Data",
                         "Please enter the NMEA Device Address/Port using Preferences", false);
                 return;
+            } else {
+                int i_port = Integer.parseInt(port);
+                myNMEATest = new TestNMEAConnectionTask(address, i_port);
+                myNMEATest.execute();
             }
-
-        else {
-
-            int i_port = Integer.parseInt(port);
-            myNMEATest = new TestNMEAConnectionTask(address, i_port);
-            myNMEATest.execute();
-
-        }
-
         } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            Log.e("VFRecorder", "exception", e);
+        }
     }
 
     public void onTestInternet(View v) {
@@ -541,16 +522,13 @@ public class WiFiActivity extends Activity {
             myInternetTest.execute();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("VFRecorder", "exception", e);
         }
-
     }
 
     /**
      * The method attached to 'buttonSendFile'.
      */
-
-
     public void onUploadFile(View v) {
         myInternetTest = new TestInternetTask();
         myUpload = new UploadTask();
@@ -578,8 +556,6 @@ public class WiFiActivity extends Activity {
         });
 
         executorService.shutdown();
-
-
     }
 
     /**
@@ -652,53 +628,46 @@ public class WiFiActivity extends Activity {
 
     }*/
 
-    /** ==================================================================================
+    /**
+     * ==================================================================================
      * Invoked by the TestNMEAConnection Task AsyncTask when the test is made.
      * This is in the main UI thread.
      */
 
 
     private void TestNMEAConnectionMessage(String msg) {
-
-        //testText.setText(msg);
-
         if (msg == "false") {
             // Internet Connection is not present
             alert.showAlertDialog(this,
                     "Connection Failed",
-                   "NMEA Connection is NOT Available", false);
+                    "NMEA Connection is NOT Available", false);
             //testText.setText(msg);
             isNMEAConnected = false;
             // stop executing code by return
             return;
-        } else if (msg == "true"){
+        } else if (msg == "true") {
             setStatus("NMEA Connection");
             // Internet Connection is not present
-           // alert.showAlertDialog(this,
-                    //"NMEA Connection",
-                    //"NMEA Connection is Available", true);
+            // alert.showAlertDialog(this,
+            //"NMEA Connection",
+            //"NMEA Connection is Available", true);
 
             //testText.setText(msg);
             isNMEAConnected = true;
             // stop executing code by return
             return;
         }
-
-
     }
 
     /**
      * AsyncTask that connects to NMEA.
      * We test that a connection can be made.
      * The result of the test is sent back to the main ui thread.
-     *
      */
-
     public class TestNMEAConnectionTask extends AsyncTask<Void, String, Void> {
-
         // Location of the remote host
-        String address ;
-        int port ;
+        String address;
+        int port;
 
         // Special messages denoting connection status
         private static final String PING_MSG = "SOCKET_PING";
@@ -802,15 +771,11 @@ public class WiFiActivity extends Activity {
 
     }
 
-
-
-
-    /** ==================================================================================
+    /**
+     * ==================================================================================
      * Invoked by the TestInternetTask AsyncTask when the test is made.
      * This is in the main UI thread.
      */
-
-
     private void TestInternetMessage(String msg) {
 
         if (msg == "false") {
@@ -822,28 +787,24 @@ public class WiFiActivity extends Activity {
             isVFConnected = false;
             // stop executing code by return
             return;
-        } else if (msg == "true"){
-
+        } else if (msg == "true") {
             setStatus("Internet Connected!");
             // Internet Connection is not present
             //alert.showAlertDialog(this,
-                   // "Sending NMEA File",
-                   // "Internet Connection is Available", true);
+            // "Sending NMEA File",
+            // "Internet Connection is Available", true);
 
             //testText.setText(msg);
             isVFConnected = true;
             // stop executing code by return
             return;
         }
-
-
     }
 
     /**
      * AsyncTask that connects to the Internet Server.
      * We test that a connection can be made.
      * The result of the test is sent back to the main ui thread.
-     *
      */
 
     public class TestInternetTask extends AsyncTask<Void, String, Void> {
@@ -855,14 +816,12 @@ public class WiFiActivity extends Activity {
 
         @Override
         protected Void doInBackground(Void... arg) {
-
             // test for connection
             checkAvailability();
             if (isInternetPresent) {
-                    msg = "true";
-                    publishProgress(msg);
-            }
-            else {
+                msg = "true";
+                publishProgress(msg);
+            } else {
                 msg = "false";
                 publishProgress(msg);
             }
@@ -870,20 +829,15 @@ public class WiFiActivity extends Activity {
             return null;
         }
 
-
         protected void checkAvailability() {
-
             cd = new ConnectionDetector(getApplicationContext());
             isInternetPresent = cd.isConnectingToInternet();
         }
 
-
         @Override
         protected void onProgressUpdate(String... values) {
-
             String msg = values[0];
             if (msg == null) return;
-
                 // Invoke the TestInternetMessage callback for all other messages
             else
                 TestInternetMessage(msg);
@@ -894,20 +848,15 @@ public class WiFiActivity extends Activity {
         /**
          * Set a flag to disconnect from the socket.
          */
-
-
     }
 
-    /** ==================================================================================
+    /**
+     * ==================================================================================
      * Invoked by the UploadTask AsyncTask. This is in the main UI thread.
      * This will confirm that the file has been successfully sent.
      */
-
     private void UploadMessage(String msg) {
-
-        alert.showAlertDialog(this,
-                 msg,
-                    "", false);
+        alert.showAlertDialog(this, msg, "", false);
 
         textTX.setText(msg);
     }
@@ -940,13 +889,11 @@ public class WiFiActivity extends Activity {
             BufferedReader reader;
             String charset = "UTF-8";
 
-
             // Get the dir of SD Card
             File sdCardDir = Environment.getExternalStorageDirectory();
 
             // Get The Text file
             File uploadFile = new File(sdCardDir, "/venturefarther/vf.zip");
-
 
             if (uploadFile.exists()) {
 
@@ -972,8 +919,7 @@ public class WiFiActivity extends Activity {
                 } catch (IOException e) {
                     Log.e(TAG, "Error in multipart!");
                 }
-            }
-            else {
+            } else {
 
                 publishProgress("No file available");
             }
@@ -987,7 +933,7 @@ public class WiFiActivity extends Activity {
             String msg = values[0];
             if (msg == null) return;
 
-            // Invoke the UploadMessage callback for all other messages
+                // Invoke the UploadMessage callback for all other messages
             else
                 UploadMessage(msg);
 
@@ -996,18 +942,16 @@ public class WiFiActivity extends Activity {
 
     }
 
-    /**  =================================================================================
+    /**
+     * =================================================================================
      * Invoked by the WiFiSocketTask AsyncTask when a newline-delimited message is received.
      * These are the NMEA sentences. This is in the main ui thread.
      */
     private void gotMessage(String msg) {
-
-            textRX.setText(msg);
-            FileWrite(msg);
-            Log.v(TAG, "[RX] " + msg);
-
+        textRX.setText(msg);
+        FileWrite(msg);
+        Log.v(TAG, "[RX] " + msg);
     }
-
 
     /**
      * AsyncTask that connects to a remote host over WiFi and reads/writes the connection
@@ -1015,9 +959,7 @@ public class WiFiActivity extends Activity {
      * main UI thread is not blocked. However, the AsyncTask has a way of sending data back
      * to the UI thread. Under the hood, it is using Threads and Handlers.
      */
-
-    public class WiFiSocketTask extends AsyncTask<Void, String, Void> {
-
+    private class WiFiSocketTask extends AsyncTask<Void, String, Void> {
         // Location of the remote host
         String address;
         int port;
@@ -1048,9 +990,7 @@ public class WiFiActivity extends Activity {
          */
         @Override
         protected Void doInBackground(Void... arg) {
-
             try {
-
                 // Open the socket and connect to it
                 socket = new Socket();
                 socket.connect(new InetSocketAddress(address, port), timeout);
@@ -1061,7 +1001,6 @@ public class WiFiActivity extends Activity {
 
                 // Confirm that the socket opened
                 if (socket.isConnected()) {
-
                     // Make sure the input stream becomes ready, or timeout
                     long start = System.currentTimeMillis();
                     while (!inStream.ready()) {
@@ -1077,19 +1016,28 @@ public class WiFiActivity extends Activity {
                     disconnectSignal = true;
                 }
 
+                //My guess create the file here, the filename should be a generated one, not static
+                //The reason is this, whwn you are connected to the onboard wifi mux you will have no
+                //internet, so the user would have to manually disconnect from the mux hotspot and connect
+                //to the internet to do the upload. Also if the user does not currently have internet
+                //we need to save the files up.
+
                 // Read messages in a loop until disconnected
                 while (!disconnectSignal) {
-
                     // Parse a message with a newline character
                     String msg = inStream.readLine();
 
                     // Send it to the UI thread
                     publishProgress(msg);
+
+                    //write line to file
                 }
 
+                //Close the file here
+
+                //Add to zip
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(TAG, "Error in socket thread!");
+                Log.e(TAG, "Error in socket thread!", e);
             }
 
             // Send a disconnect message
@@ -1101,7 +1049,7 @@ public class WiFiActivity extends Activity {
                 if (inStream != null) inStream.close();
                 if (outStream != null) outStream.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error in socket thread!", e);
             }
 
             return null;
@@ -1154,8 +1102,9 @@ public class WiFiActivity extends Activity {
         }
     }
 
-    /** ==================================================================================
-     *  For making the preferences ...
+    /**
+     * ==================================================================================
+     * For making the preferences ...
      */
 
     public static class MyPreferencesActivity extends PreferenceActivity {
@@ -1167,12 +1116,9 @@ public class WiFiActivity extends Activity {
         }
 
 
-
-        public static class MyPreferenceFragment extends PreferenceFragment
-        {
+        public static class MyPreferenceFragment extends PreferenceFragment {
             @Override
-            public void onCreate(final Bundle savedInstanceState)
-            {
+            public void onCreate(final Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 addPreferencesFromResource(R.xml.preferences);
             }
@@ -1181,4 +1127,3 @@ public class WiFiActivity extends Activity {
     }
 
 }
-
