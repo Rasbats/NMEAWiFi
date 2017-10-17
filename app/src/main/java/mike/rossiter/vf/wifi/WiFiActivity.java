@@ -2,15 +2,10 @@ package mike.rossiter.vf.wifi;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaScannerConnection;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,10 +23,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -45,6 +37,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
@@ -53,23 +47,17 @@ import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
 
-import android.view.View.OnClickListener;
-
 /**
  * Simple UI demonstrating how to open a serial communication link to a
  * remote host over WiFi, send and receive messages, and update the display.
  * <p>
  * Author: Hayk Martirosyan
  */
-
-public class WiFiActivity extends Activity {
-
+public class WiFiActivity extends Activity implements AsyncResponse {
     // Tag for logging
     private final String TAG = getClass().getSimpleName();
     private static final int BUFFER = 2048;
-    public File testFile;
     public File zipFile;
-    public BufferedWriter myWriter;
     SharedPreferences preferences;
     SharedPreferences myprefs;
     boolean isVFConnected;
@@ -77,7 +65,6 @@ public class WiFiActivity extends Activity {
     boolean isDisconnected;
     public static String ip_host;
     public static String ip_port;
-
 
     // AsyncTask object that manages the connection in a separate thread
     WiFiSocketTask wifiTask = null;
@@ -88,10 +75,8 @@ public class WiFiActivity extends Activity {
     // AsyncTask object that tests for NMEA connection.
     TestNMEAConnectionTask myNMEATest = null;
 
-
     // Alert Dialog Manager
     ShowAlert alert = new ShowAlert();
-
 
     // UI elements
     TextView textStatus, textRX, textTX, testText;
@@ -100,17 +85,15 @@ public class WiFiActivity extends Activity {
     //Button buttonWrite, buttonRead;
     Button buttonWiFi;
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
-    public void onPublishUpdate(String... values) {
-
-        Toast.makeText(getApplicationContext(), "error",
-                Toast.LENGTH_LONG).show();
+    @Override
+    public void processFinish(File zipFile) {
+        this.zipFile = zipFile;
     }
 
     @Override
@@ -133,7 +116,6 @@ public class WiFiActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wi_fi);
 
@@ -168,16 +150,6 @@ public class WiFiActivity extends Activity {
         isVFConnected = false;
         isNMEAConnected = false;
         isDisconnected = false;
-        /*
-        ) {
-            Toast.makeText(getApplicationContext(), "We are able to write!",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "NOT able to write!",
-                    Toast.LENGTH_LONG).show();
-        }
-        */
-
     }
 
     public static long getFolderSize(File f) {
@@ -192,29 +164,13 @@ public class WiFiActivity extends Activity {
         return size;
     }
 
-    /*
-
-    public String getFileSize(File file){
-        String value=null;
-        long Filesize=getFolderSize(file)/1024;//call function and convert bytes into Kb
-        if(Filesize>=1024)
-            value=Filesize/1024+" Mb";
-        else
-            value=Filesize+" Kb";
-
-        return value;
-    }
-*/
     @Override
     public void onResume() {
         super.onResume();
         ReadPreferences();
-        // Toast.makeText(getApplicationContext(), "here",
-        //Toast.LENGTH_LONG).show();
     }
 
     public void ReadPreferences() {
-
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         ip_port = preferences.getString("port", "");
@@ -231,62 +187,20 @@ public class WiFiActivity extends Activity {
             alert.showAlertDialog(this,
                     "Missing NMEA Connection Data",
                     "Please enter the NMEA Device Host using Preferences", false);
-
         }
 
         editTextAddress.setText(ip_host);
         editTextPort.setText((ip_port));
-
-        // Toast.makeText(this, ip_port,
-        //  Toast.LENGTH_LONG).show();
     }
 
-
     public void openWifiSettings() {
-
         final Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         final ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.wifi.WifiSettings");
         intent.setComponent(cn);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
     }
-/*
-    public void WritePrefs(int i){
-        //prefs.edit().putInt(FileKey, i).apply();
-    }
-
-    public int ReadPrefs(){
-
-        int i = 0;
-
-      //  int myInt = prefs.getInt(FileKey, i );
-        return i;
-    }
-
-
-    public static final String PREFS_NAME = "preferences";
-
-    public void onWrite(View v){
-
-        SharedPreferences pref = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        editor.putString("Name", "Elena");
-        editor.apply();
-    }
-
-    public void onRead(View v){
-        myprefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        String s = myprefs.getString("Name", null);
-        Toast.makeText(this, s,
-          Toast.LENGTH_LONG).show();
-
-    }
-
-    */
 
     /**
      * Helper function, print a status to both the UI and program log.
@@ -296,19 +210,22 @@ public class WiFiActivity extends Activity {
         textStatus.setText(s);
     }
 
+    /* Checks if external storage is available for read and write */
     private boolean isExternalStorageWritable() {
-        try {
-
-            testFile = new File(this.getExternalFilesDir(null), "TestFile2.txt");
-            if (!testFile.exists())
-                testFile.createNewFile();
-            // Adds a line to the trace file
-            myWriter = new BufferedWriter(new FileWriter(testFile, true /*append*/));
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
-        } catch (IOException e) {
-            Log.e("ReadWriteFile", "Unable to write to the TestFile.txt file.");
         }
+        return false;
+    }
 
+    /* Checks if external storage is available to at least read */
+    private boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
         return false;
     }
 
@@ -329,7 +246,6 @@ public class WiFiActivity extends Activity {
         }
 
         final int port = Integer.parseInt(ip_port);
-
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         executorService.execute(new Runnable() {
@@ -347,13 +263,14 @@ public class WiFiActivity extends Activity {
         } else {
             //Set the status to connected
             connected();
+
+            wifiTask = new WiFiSocketTask(host, port, this);
+
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     if (isNMEAConnected) {
-                        wifiTask = new WiFiSocketTask(host, port);
                         wifiTask.execute();
-
                     }
                 }
             });
@@ -366,7 +283,6 @@ public class WiFiActivity extends Activity {
      * Disconnect from the connection.
      */
     public void disconnectButtonPressed(View v) {
-
         if (wifiTask == null) {
             setStatus("Already disconnected!");
             return;
@@ -394,100 +310,46 @@ public class WiFiActivity extends Activity {
         textRX.setText("");
         textTX.setText("");
         wifiTask = null;
-        try {
-            // Creates a file in the primary external storage space of the
-            // current application.
-            // If the file does not exists, it is created.
-            //String s = this.getFilesDir().getAbsolutePath();
-            //Toast.makeText(getApplicationContext(),s,
-            //Toast.LENGTH_LONG).show();
-
-            myWriter.close();
-            String[] filearray = new String[1];
-            filearray[0] = testFile.getAbsolutePath();
-
-
-            File sdCardDir = Environment.getExternalStorageDirectory();
-
-            File directory = new File(sdCardDir + File.separator + "venturefarther");
-
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            zipFile = new File(sdCardDir, "/venturefarther/vf.zip");
-
-            long fs = getFolderSize(testFile);
-            /*
-            if (fs < 50){
-                alert.showAlertDialog(this,
-                        "File not saved",
-                        "Recordings greater than 50kb are required!", false);
-                testFile.delete();
-                return;
-            }
-*/
-            //Toast.makeText(getApplicationContext(),"The File Size is " + fs,
-            // Toast.LENGTH_LONG).show();
-
-            zip(filearray, zipFile.getAbsolutePath());
-            testFile.delete();
-
-            alert.showAlertDialog(this,
-                    "File saved",
-                    "NMEA Recording is ready for transfer!", false);
-            // Refresh the data so it can seen when the device is plugged in a
-            // computer. You may have to unplug and replug the device to see the
-            // latest changes. This is not necessary if the user should not modify
-            // the files.
-            MediaScannerConnection.scanFile(this,
-                    new String[]{testFile.toString()},
-                    null,
-                    null);
-        } catch (IOException e) {
-            //Toast.makeText(getApplicationContext(),"unable to write!",
-            //Toast.LENGTH_LONG).show();
-            Log.e("ReadWriteFile", "Unable to write to the TestFile.txt file.");
-        }
     }
 
-    private void FileWrite(String m) {
-        try {
-            myWriter.write(m);
-            myWriter.write("\n");
-        } catch (IOException e) {
-            Log.e("VFRecorder", "ReadWriteFile Exception", e);
-        }
-    }
-
-    public void zip(String[] _files, String zipFileName) {
+    private File zip(File tempfile, String zipFileName) throws IOException {
+        File zipFile = null;
 
         try {
             BufferedInputStream origin = null;
-            FileOutputStream dest = new FileOutputStream(zipFileName);
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
-                    dest));
+
+            //Default to writing to SD card if possible
+            if(isExternalStorageWritable())
+                zipFile = new File(getExternalFilesDir(null),zipFileName);
+            else
+                zipFile = new File(getFilesDir(),zipFileName);
+
+            FileOutputStream dest = new FileOutputStream(zipFile);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             byte data[] = new byte[BUFFER];
 
-            for (int i = 0; i < _files.length; i++) {
-                Log.v("Compress", "Adding: " + _files[i]);
-                FileInputStream fi = new FileInputStream(_files[i]);
-                origin = new BufferedInputStream(fi, BUFFER);
+            Log.v("Compress", "Adding: " + tempfile.getAbsolutePath());
+            FileInputStream fi = new FileInputStream(tempfile);
+            origin = new BufferedInputStream(fi, BUFFER);
 
-                ZipEntry entry = new ZipEntry(_files[i].substring(_files[i].lastIndexOf("/") + 1));
-                out.putNextEntry(entry);
-                int count;
+            ZipEntry entry = new ZipEntry(tempfile.getName());
+            out.putNextEntry(entry);
+            int count;
 
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
-                }
-                origin.close();
+            while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                out.write(data, 0, count);
             }
+            origin.close();
 
             out.close();
+
+            Log.i(TAG,"Zip Location:" + zipFile.getAbsolutePath());
         } catch (Exception e) {
             Log.e("VFRecorder", "exception", e);
+            throw e;
         }
+
+        return zipFile;
     }
 
     /**
@@ -515,7 +377,6 @@ public class WiFiActivity extends Activity {
     }
 
     public void onTestInternet(View v) {
-
         // Location of the remote host
         try {
             myInternetTest = new TestInternetTask();
@@ -531,7 +392,7 @@ public class WiFiActivity extends Activity {
      */
     public void onUploadFile(View v) {
         myInternetTest = new TestInternetTask();
-        myUpload = new UploadTask();
+        myUpload = new UploadTask(this.zipFile);
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -559,82 +420,10 @@ public class WiFiActivity extends Activity {
     }
 
     /**
-     * Carry out a test for a working Internet connection in an AsyncTask.
-     * If successful start the UploadTask in a new thread..
-     *
-     */
-/*
-    public void UploadFileMethod() {
-
-        try {
-
-            if (isVFConnected) {
-
-                try {
-                    myUpload = new UploadTask();
-                    myUpload.execute();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else return;
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //myInternetTest.cancel(true);
-        //myInternetTest = null;
-
-
-    }
-
-    public String getTextFileData(String fileName) {
-
-        // Get the dir of SD Card
-        File sdCardDir = Environment.getExternalStorageDirectory();
-
-        // Get The Text file
-        File txtFile = new File(sdCardDir, fileName);
-
-        // Read the file Contents in a StringBuilder Object
-        StringBuilder text = new StringBuilder();
-
-        String f = sdCardDir.getAbsolutePath();
-
-        Toast.makeText(getApplicationContext(),f,
-                Toast.LENGTH_LONG).show();
-
-        try {
-
-            BufferedReader reader = new BufferedReader(new FileReader(txtFile));
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                text.append(line + '\n');
-            }
-            reader.close();
-
-
-        } catch (IOException e) {
-            Log.e("C2c", "Error occured while reading text file!!");
-            Toast.makeText(getApplicationContext(),"error",
-                    Toast.LENGTH_LONG).show();
-        }
-
-        return text.toString();
-
-    }*/
-
-    /**
      * ==================================================================================
      * Invoked by the TestNMEAConnection Task AsyncTask when the test is made.
      * This is in the main UI thread.
      */
-
-
     private void TestNMEAConnectionMessage(String msg) {
         if (msg == "false") {
             // Internet Connection is not present
@@ -707,7 +496,6 @@ public class WiFiActivity extends Activity {
 
                     // Confirm that the socket opened
                     if (socket.isConnected()) {
-
                         // Make sure the input stream becomes ready, or timeout
                         long start = System.currentTimeMillis();
                         while (!inStream.ready()) {
@@ -727,16 +515,13 @@ public class WiFiActivity extends Activity {
 
                     // Read messages in a loop until disconnected
                     while (!disconnectSignal) {
-
                         // Send it to the UI thread
                         msg = "true";
                         publishProgress("true");
                         disconnectSignal = true;
                     }
-
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "Error in socket thread!");
+                    Log.e(TAG, "Error in socket thread!", e);
                 }
 
                 // Send a disconnect message
@@ -758,17 +543,14 @@ public class WiFiActivity extends Activity {
 
         @Override
         protected void onProgressUpdate(String... values) {
-
             String msg = values[0];
             if (msg == null) return;
-
                 // Invoke the UploadMessage callback for all other messages
             else
                 TestNMEAConnectionMessage(msg);
 
             super.onProgressUpdate(values);
         }
-
     }
 
     /**
@@ -777,7 +559,6 @@ public class WiFiActivity extends Activity {
      * This is in the main UI thread.
      */
     private void TestInternetMessage(String msg) {
-
         if (msg == "false") {
             // Internet Connection is not present
             alert.showAlertDialog(this,
@@ -806,9 +587,7 @@ public class WiFiActivity extends Activity {
      * We test that a connection can be made.
      * The result of the test is sent back to the main ui thread.
      */
-
     public class TestInternetTask extends AsyncTask<Void, String, Void> {
-
         ConnectionDetector cd;
         // flag for Internet connection status
         Boolean isInternetPresent;
@@ -862,65 +641,44 @@ public class WiFiActivity extends Activity {
     }
 
     /**
-     * This program demonstrates a usage of the MultipartUtility class.
-     * @author www.codejava.net
-     *
-     */
-
-    /**
      * AsyncTask that connects to a Internet Server and sends the NMEA file by Multipart Form
      * The upload happens in a separate thread, so the main UI thread is not blocked.
      * However, the AsyncTask has a way of sending data back
      * to the UI thread. Under the hood, it is using Threads and Handlers.
      */
-
     public class UploadTask extends AsyncTask<Void, String, Void> {
+        File zipFile;
+
+        public UploadTask(File zipFile) {
+            this.zipFile = zipFile;
+        }
 
         @Override
         protected Void doInBackground(Void... arg) {
-
-            final String boundary;
-            final String LINE_FEED = "\r\n";
-            HttpURLConnection httpConn;
-            OutputStream outputStream;
-            PrintWriter writer;
-
-            FileInputStream is;
-            BufferedReader reader;
             String charset = "UTF-8";
 
-            // Get the dir of SD Card
-            File sdCardDir = Environment.getExternalStorageDirectory();
-
-            // Get The Text file
-            File uploadFile = new File(sdCardDir, "/venturefarther/vf.zip");
-
-            if (uploadFile.exists()) {
-
+            if (zipFile!=null && zipFile.exists()) {
                 String requestURL = "https://www.venturefarther.com/upload/HandleDirectNMEAUpload.action";
-                //String requestURL = "http://posttestserver.com/post.php";
 
                 try {
-
-
                     MultipartUtility multipart = new MultipartUtility(requestURL, charset);
 
-                    multipart.addHeaderField("User-Agent", "CodeJava");
-                    multipart.addHeaderField("Test-Header", "Header-Value");
+                    multipart.addHeaderField("User-Agent", "VentureFarther");
 
                     multipart.addFormField("key", "rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm");
-                    multipart.addFilePart("file", uploadFile);
 
+                    multipart.addFilePart("file", zipFile);
 
                     List<String> response = multipart.finish();
+                    for (String line : response) {
+                        System.out.println(line);
+                    }
 
                     publishProgress(response.get(0));
-
                 } catch (IOException e) {
                     Log.e(TAG, "Error in multipart!");
                 }
             } else {
-
                 publishProgress("No file available");
             }
 
@@ -929,7 +687,6 @@ public class WiFiActivity extends Activity {
 
         @Override
         protected void onProgressUpdate(String... values) {
-
             String msg = values[0];
             if (msg == null) return;
 
@@ -939,7 +696,6 @@ public class WiFiActivity extends Activity {
 
             super.onProgressUpdate(values);
         }
-
     }
 
     /**
@@ -949,7 +705,7 @@ public class WiFiActivity extends Activity {
      */
     private void gotMessage(String msg) {
         textRX.setText(msg);
-        FileWrite(msg);
+//        FileWrite(msg);
         Log.v(TAG, "[RX] " + msg);
     }
 
@@ -959,7 +715,9 @@ public class WiFiActivity extends Activity {
      * main UI thread is not blocked. However, the AsyncTask has a way of sending data back
      * to the UI thread. Under the hood, it is using Threads and Handlers.
      */
-    private class WiFiSocketTask extends AsyncTask<Void, String, Void> {
+    public class WiFiSocketTask extends AsyncTask<Object, Object, File> {
+        public AsyncResponse delegate = null;
+
         // Location of the remote host
         String address;
         int port;
@@ -980,16 +738,19 @@ public class WiFiActivity extends Activity {
         private int timeout = 5000;
 
         // Constructor
-        WiFiSocketTask(String address, int port) {
+        WiFiSocketTask(String address, int port, AsyncResponse delegate) {
             this.address = address;
             this.port = port;
+            this.delegate = delegate;
         }
 
         /**
          * Main method of AsyncTask, opens a socket and continuously reads from it
          */
         @Override
-        protected Void doInBackground(Void... arg) {
+        protected File doInBackground(Object... arg) {
+            File zipFile = null;
+
             try {
                 // Open the socket and connect to it
                 socket = new Socket();
@@ -1021,21 +782,38 @@ public class WiFiActivity extends Activity {
                 //internet, so the user would have to manually disconnect from the mux hotspot and connect
                 //to the internet to do the upload. Also if the user does not currently have internet
                 //we need to save the files up.
+                File tempFile = getTempFile();
 
-                // Read messages in a loop until disconnected
-                while (!disconnectSignal) {
-                    // Parse a message with a newline character
-                    String msg = inStream.readLine();
+                try {
+                    FileOutputStream stream = new FileOutputStream(tempFile);
 
-                    // Send it to the UI thread
-                    publishProgress(msg);
+                    // Read messages in a loop until disconnected
+                    while (!disconnectSignal) {
+                        // Parse a message with a newline character
+                        String msg = inStream.readLine() + System.getProperty("line.separator");
 
-                    //write line to file
+                        // Send it to the UI thread
+                        publishProgress(msg);
+
+                        //write line to file
+                        stream.write(msg.getBytes());
+
+                        Log.i(TAG, "Writing to file:" + msg);
+                    }
+
+                    //Close the file here
+                    stream.close();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error in socket thread!", e);
                 }
 
-                //Close the file here
-
                 //Add to zip
+                String zipFileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip";
+                zipFile = zip(tempFile, zipFileName);
+
+
+                Log.i(TAG, "--1--" + zipFile.getAbsolutePath());
+
             } catch (Exception e) {
                 Log.e(TAG, "Error in socket thread!", e);
             }
@@ -1052,7 +830,23 @@ public class WiFiActivity extends Activity {
                 Log.e(TAG, "Error in socket thread!", e);
             }
 
-            return null;
+            Log.i(TAG, "--2--" + zipFile.getAbsolutePath());
+
+            return zipFile;
+        }
+
+        private File getTempFile() {
+            File file = null;
+            try {
+                String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".NMEA";
+                file = File.createTempFile(fileName, null, getApplicationContext().getCacheDir());
+                //Clean up this temp file when the app closes
+                file.deleteOnExit();
+            } catch (IOException e) {
+                Log.e(TAG, "Error while creating temp file", e);
+            }
+
+            return file;
         }
 
         /**
@@ -1061,9 +855,8 @@ public class WiFiActivity extends Activity {
          * publishProgress() is called.
          */
         @Override
-        protected void onProgressUpdate(String... values) {
-
-            String msg = values[0];
+        protected void onProgressUpdate(Object... values) {
+            Object msg = values[0];
             if (msg == null) return;
 
             // Handle meta-messages
@@ -1076,16 +869,21 @@ public class WiFiActivity extends Activity {
 
             // Invoke the gotMessage callback for all other messages
             else
-                gotMessage(msg);
+                gotMessage(msg.toString());
 
             super.onProgressUpdate(values);
+        }
+
+        protected void onPostExecute(File zipFile) {
+            Log.i(TAG, "--3--" + zipFile.getAbsolutePath());
+
+            delegate.processFinish(zipFile);
         }
 
         /**
          * Write a message to the connection. Runs in UI thread.
          */
         public void sendMessage(String data) {
-
             try {
                 outStream.write(data.getBytes());
                 outStream.write('\n');
@@ -1108,13 +906,11 @@ public class WiFiActivity extends Activity {
      */
 
     public static class MyPreferencesActivity extends PreferenceActivity {
-
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
         }
-
 
         public static class MyPreferenceFragment extends PreferenceFragment {
             @Override
@@ -1125,5 +921,4 @@ public class WiFiActivity extends Activity {
         }
 
     }
-
 }
