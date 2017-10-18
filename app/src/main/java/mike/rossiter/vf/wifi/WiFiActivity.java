@@ -961,7 +961,7 @@ public class WiFiActivity extends Activity {
                     multipart.addHeaderField("User-Agent", "CodeJava");
                     multipart.addHeaderField("Test-Header", "Header-Value");
 
-                    multipart.addFormField("key", "rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm");
+                    multipart.addFormField("key", "");
                     multipart.addFilePart("file", uploadFile);
 
 
