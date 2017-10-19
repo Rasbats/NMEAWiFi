@@ -47,7 +47,7 @@ public class MultipartUtility {
 
         this.charset = charset;
         // creates a unique boundary based on time stamp
-        boundary = "===" + System.currentTimeMillis() + "===";
+        boundary = "---" + System.currentTimeMillis() + "---";
 
         URL url = new URL(requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
@@ -56,8 +56,7 @@ public class MultipartUtility {
         httpConn.setDoInput(true);
         httpConn.setRequestProperty("Content-Type",
                 "multipart/form-data; boundary=" + boundary);
-        httpConn.setRequestProperty("User-Agent", "CodeJava Agent");
-        httpConn.setRequestProperty("Test", "Bonjour");
+        httpConn.setRequestProperty("User-Agent", "VentureFarther Agent");
         outputStream = httpConn.getOutputStream();
         writer = new PrintWriter(new OutputStreamWriter(outputStream, charset), true);
     }

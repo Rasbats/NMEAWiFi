@@ -21,12 +21,9 @@ import android.widget.TextView;
 
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.io.BufferedReader;
@@ -37,6 +34,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +45,20 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.List;
 
-import static android.app.PendingIntent.getActivity;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Simple UI demonstrating how to open a serial communication link to a
@@ -100,13 +113,9 @@ public class WiFiActivity extends Activity implements AsyncResponse {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.preferences: {
-
                 Intent intent = new Intent();
                 intent.setClassName(this, "mike.rossiter.vf.wifi.WiFiActivity$MyPreferencesActivity");
                 startActivity(intent);
-
-                //Toast.makeText(getApplicationContext(),"here",
-                //  Toast.LENGTH_LONG).show();
 
                 return true;
             }
@@ -142,26 +151,10 @@ public class WiFiActivity extends Activity implements AsyncResponse {
                 openWifiSettings();
             }
         });
-        //ReadPreferences();
-
-        boolean isAbleToWrite;
-        isAbleToWrite = isExternalStorageWritable();
 
         isVFConnected = false;
         isNMEAConnected = false;
         isDisconnected = false;
-    }
-
-    public static long getFolderSize(File f) {
-        long size = 0;
-        if (f.isDirectory()) {
-            for (File file : f.listFiles()) {
-                size += getFolderSize(file);
-            }
-        } else {
-            size = f.length();
-        }
-        return size;
     }
 
     @Override
@@ -655,30 +648,43 @@ public class WiFiActivity extends Activity implements AsyncResponse {
 
         @Override
         protected Void doInBackground(Void... arg) {
+            Log.i(TAG, "Starting Sendfile");
+
             String charset = "UTF-8";
 
             if (zipFile!=null && zipFile.exists()) {
-                String requestURL = "https://www.venturefarther.com/upload/HandleDirectNMEAUpload.action";
+                Log.i(TAG, "Sending file:" + zipFile.getAbsolutePath());
 
+                HttpUrl.Builder urlBuilder = HttpUrl.parse("https://www.venturefarther.com/upload/HandleDirectNMEAUpload.action").newBuilder();
+                urlBuilder.addQueryParameter("key", "rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm");
+                String requestURL = urlBuilder.build().toString();
+
+                MediaType MEDIA_TYPE_ZIP = MediaType.parse("application/zip");
+                OkHttpClient preconfiguredClient = new OkHttpClient();
+
+                OkHttpClient client = trustAllSslClient(preconfiguredClient);
+
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("attachment", zipFile.getName(),
+                                RequestBody.create(MEDIA_TYPE_ZIP, zipFile))
+                        .build();
+
+                Request request = new Request.Builder()
+                        .header("User-Agent", "VentureFarther")
+                        .url(requestURL)
+                        .post(requestBody)
+                        .build();
+
+                Response response = null;
                 try {
-                    MultipartUtility multipart = new MultipartUtility(requestURL, charset);
-
-                    multipart.addHeaderField("User-Agent", "VentureFarther");
-
-                    multipart.addFormField("key", "rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm");
-
-                    multipart.addFilePart("file", zipFile);
-
-                    List<String> response = multipart.finish();
-                    for (String line : response) {
-                        System.out.println(line);
-                    }
-
-                    publishProgress(response.get(0));
+                    response = client.newCall(request).execute();
+                    Log.i(TAG,response.body().string());
                 } catch (IOException e) {
-                    Log.e(TAG, "Error in multipart!");
+                    Log.i(TAG,"Error uploading file.",e);
                 }
             } else {
+                Log.i(TAG, "ZipFile not available.");
                 publishProgress("No file available");
             }
 
@@ -705,7 +711,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      */
     private void gotMessage(String msg) {
         textRX.setText(msg);
-//        FileWrite(msg);
         Log.v(TAG, "[RX] " + msg);
     }
 
@@ -830,8 +835,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
                 Log.e(TAG, "Error in socket thread!", e);
             }
 
-            Log.i(TAG, "--2--" + zipFile.getAbsolutePath());
-
             return zipFile;
         }
 
@@ -875,8 +878,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
         }
 
         protected void onPostExecute(File zipFile) {
-            Log.i(TAG, "--3--" + zipFile.getAbsolutePath());
-
             delegate.processFinish(zipFile);
         }
 
@@ -904,7 +905,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * ==================================================================================
      * For making the preferences ...
      */
-
     public static class MyPreferencesActivity extends PreferenceActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -919,6 +919,54 @@ public class WiFiActivity extends Activity implements AsyncResponse {
                 addPreferencesFromResource(R.xml.preferences);
             }
         }
+    }
 
+    /*
+     * This is very bad practice and should NOT be used in production.
+     */
+    private static final TrustManager[] trustAllCerts = new TrustManager[] {
+        new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+            }
+
+            @Override
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[]{};
+            }
+        }
+    };
+
+    private static final SSLContext trustAllSslContext;
+    static {
+        try {
+            trustAllSslContext = SSLContext.getInstance("SSL");
+            trustAllSslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final SSLSocketFactory trustAllSslSocketFactory = trustAllSslContext.getSocketFactory();
+
+    /*
+     * This should not be used in production unless you really don't care
+     * about the security. Use at your own risk.
+     */
+    public static OkHttpClient trustAllSslClient(OkHttpClient client) {
+        Log.w("", "Using the trustAllSslClient is highly discouraged and should not be used in Production!");
+        OkHttpClient.Builder builder = client.newBuilder();
+        builder.sslSocketFactory(trustAllSslSocketFactory, (X509TrustManager)trustAllCerts[0]);
+        builder.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+        return builder.build();
     }
 }

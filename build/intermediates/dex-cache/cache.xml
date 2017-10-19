@@ -2,94 +2,220 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/home/mike/Projects/android-ndk/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\789accb2823e8c44a2ddc51e8831de1f4a298a03\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_a182caa1237114b0dda9390bcac5c5cac1226813\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.1\support-annotations-25.3.1.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/support-annotations-25.3.1_ac1c23c0ab035e3eb2e51bb2454600042fca50ef.jar" />
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.3.1_be7be68667259f965b0dd0f4f5e27f8eb179a210\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/home/mike/.android/build-cache/7a3cea7fb4083fc49f52a5968e76d1476c5b49bc/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\Tashi\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_c844772d7de28d61d6b5fe7994e8ba91fd996dd5.jar" />
+        sha1="a9283170b7305c8d92d25aff02a6ab7e45d06cbe">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\okio-1.13.0_7326bfbf6657614c6c488c96dd6cf00ef62f6a47\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/home/mike/.android/build-cache/e734effdedb420ce9ab7fe3b407d38342c1cc33d/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_bbe7e478ba59ee23da909356cdd8f1733eaddc97.jar" />
+        sha1="8e6a18bb09f91d4c8014b7ade48644424a16f264">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_e97b03965e9c51a14990156cce43cbb8e4d7214a\classes.dex" />
     </item>
     <item
         is-multidex="false"
-        jar="/home/mike/.android/build-cache/57727fbc3eacb91823072d4f480deb1a8ad294b6/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_601a5805fd3b44e1646a23c090bd45d6e3b1b2a6.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/mike/.android/build-cache/035de72c5682d60da4f21548802fa08c3bc57e6d/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_16215f4782c489b3a3682c2a680bbe91e4a9b2ff.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/mike/.android/build-cache/d3ef6d6758b7562bf7e0f8fb5061c39ea75fa3f0/output/jars/classes.jar"
+        jar="C:\Users\Tashi\.android\build-cache\789accb2823e8c44a2ddc51e8831de1f4a298a03\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_31fb3600b5736d7cdd63c79728c02aab8a8595ab.jar" />
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_a182caa1237114b0dda9390bcac5c5cac1226813.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/home/mike/.android/build-cache/a131e9609c2165a79588f3a4abb066be66fa448c/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_30f2c8adfe71c0c2bf4501312c692bcd4b87130f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/mike/.android/build-cache/d72e486d17c7777c944b784c8e960325cdf51236/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_89f98ab6498b12f2cf82238c14bcaa366121eefa.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/home/mike/.android/build-cache/7f7690e2d32a109dac761af856965ea413f07bd9/output/jars/classes.jar"
+        jar="C:\Users\Tashi\.android\build-cache\b0ff5a1b81a1fb633b145d0a90305417bbb9ddd4\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_0247912b17550180fe66977cd8adcf004700ff8d.jar" />
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_111766f60461fb6d5d615ecfbc1ae9822d5d3f43.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/home/mike/.android/build-cache/db2822f71a55607ce7a35b2cd55de89bae455715/output/jars/classes.jar"
+        jar="C:\Users\Tashi\.android\build-cache\fc855e11b8f4775ab242415874ebbc1a869d2cb4\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_74548c6b209bfef903bae0b7a80bd27ac72dffe9.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\195eaa4f72256f25aa1e59804a27a0fb40eee653\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_3a249c9238f29d27d341d3c7342d3067d23c2337\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\fc855e11b8f4775ab242415874ebbc1a869d2cb4\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_74548c6b209bfef903bae0b7a80bd27ac72dffe9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\b0ff5a1b81a1fb633b145d0a90305417bbb9ddd4\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_111766f60461fb6d5d615ecfbc1ae9822d5d3f43\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.9.0\1b6c10b5120995a7542c1a31b7828fb8593c8ba\okhttp-3.9.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="01b6c10b5120995a7542c1a31b7828fb8593c8ba">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\okhttp-3.9.0_8c07e465e15d05e916d4341af0f6023db8569deb\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\.android\build-cache\195eaa4f72256f25aa1e59804a27a0fb40eee653\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_3a249c9238f29d27d341d3c7342d3067d23c2337.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\e1302495025c861c37fc97c81d269e5ea0474c79\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_3a723675ae2859f2f09bd7b6944451f419f371e8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\853a20701d4676bf9f2e392f4b8e7c04e5dd78ab\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_26134c93187adbd6ff5005d14450fa57f55aa54d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\22fbd222ebecc07f58d628e07ed660e2d4c0742f\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_8076fe61d2e530413c3e7dbe8ad42d5ce775971e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_a4f912fc6089e858a376c7c8647bceddb03e3c68\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.1\support-annotations-25.3.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\support-annotations-25.3.1_be7be68667259f965b0dd0f4f5e27f8eb179a210.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\bb9d0bd54c37c4ccedbc0ad35203acb47f67d94c\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_74304ad9e42486a2c247c503d49a5bec02c79f2e\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\.android\build-cache\5b32c7ed5c988b0e0f542fc9a009a9b86279a58d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_19d6e492095984910c3dea65896ec2f1f1f62727.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Tashi\.android\build-cache\5b32c7ed5c988b0e0f542fc9a009a9b86279a58d\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_19d6e492095984910c3dea65896ec2f1f1f62727\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\.android\build-cache\e1302495025c861c37fc97c81d269e5ea0474c79\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_3a723675ae2859f2f09bd7b6944451f419f371e8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\.android\build-cache\853a20701d4676bf9f2e392f4b8e7c04e5dd78ab\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_26134c93187adbd6ff5005d14450fa57f55aa54d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\.android\build-cache\22fbd222ebecc07f58d628e07ed660e2d4c0742f\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
-        <dex dex="/home/mike/AndroidStudioProjects/MyWiFiApp/app/build/intermediates/pre-dexed/debug/classes_7fa6ba952355acf73fb62f079f447ba83d5314b4.jar" />
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_8076fe61d2e530413c3e7dbe8ad42d5ce775971e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Tashi\.android\build-cache\bb9d0bd54c37c4ccedbc0ad35203acb47f67d94c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="C:\Users\Tashi\AndroidStudioProjects\myWiFiApp\app\build\intermediates\pre-dexed\release\classes_74304ad9e42486a2c247c503d49a5bec02c79f2e.jar" />
     </item>
 
 </items>
