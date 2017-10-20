@@ -12,7 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad548881-2418-4455-9468-1691de962656" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MyWiFiApp.iws" />
@@ -53,18 +53,6 @@
               <caret line="677" column="0" selection-start-line="677" selection-start-column="0" selection-end-line="677" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5070#5222#0" expanded="true" />
-                <element signature="e#5221#5222#0" expanded="true" />
-                <element signature="e#8148#8349#0" expanded="true" />
-                <element signature="e#8348#8349#0" expanded="true" />
-                <element signature="e#8616#8835#0" expanded="true" />
-                <element signature="e#8834#8835#0" expanded="true" />
-                <element signature="e#12533#12669#0" expanded="true" />
-                <element signature="e#12668#12669#0" expanded="true" />
-                <element signature="e#12770#12959#0" expanded="true" />
-                <element signature="e#12958#12959#0" expanded="true" />
-                <element signature="e#33236#33408#0" expanded="true" />
-                <element signature="e#33407#33408#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -112,14 +100,14 @@
       </file>
       <file leaf-file-name="activity_wi_fi.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_wi_fi.xml">
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1921">
               <caret line="113" column="47" selection-start-line="113" selection-start-column="47" selection-end-line="113" selection-end-column="47" />
               <folding />
             </state>
+          </provider>
+          <provider editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
@@ -1992,6 +1980,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2078,16 +2069,13 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="device.picker.selection" value="5203ed7fe8fbb395" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="settings.editor.selected.configurable" value="application.passwordSafe" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
@@ -2532,7 +2520,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508486754111</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added OkHttpClient, SSL, passing key as a request param and some code reformating.">
+      <created>1508486948487</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1508486948487</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2664,18 +2659,6 @@
           <caret line="467" column="35" selection-start-line="467" selection-start-column="24" selection-end-line="467" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5070#5222#0" expanded="true" />
-            <element signature="e#5221#5222#0" expanded="true" />
-            <element signature="e#8148#8349#0" expanded="true" />
-            <element signature="e#8348#8349#0" expanded="true" />
-            <element signature="e#8616#8835#0" expanded="true" />
-            <element signature="e#8834#8835#0" expanded="true" />
-            <element signature="e#12533#12669#0" expanded="true" />
-            <element signature="e#12668#12669#0" expanded="true" />
-            <element signature="e#12770#12959#0" expanded="true" />
-            <element signature="e#12958#12959#0" expanded="true" />
-            <element signature="e#33236#33408#0" expanded="true" />
-            <element signature="e#33407#33408#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2739,13 +2722,13 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/headers_preference.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/fragment_preference.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_launcher.png">
@@ -2776,13 +2759,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/preferences.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values-w820dp/dimens.xml">
@@ -2829,14 +2812,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_wi_fi.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1921">
           <caret line="113" column="47" selection-start-line="113" selection-start-column="47" selection-end-line="113" selection-end-column="47" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
@@ -2897,18 +2880,6 @@
           <caret line="677" column="0" selection-start-line="677" selection-start-column="0" selection-end-line="677" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5070#5222#0" expanded="true" />
-            <element signature="e#5221#5222#0" expanded="true" />
-            <element signature="e#8148#8349#0" expanded="true" />
-            <element signature="e#8348#8349#0" expanded="true" />
-            <element signature="e#8616#8835#0" expanded="true" />
-            <element signature="e#8834#8835#0" expanded="true" />
-            <element signature="e#12533#12669#0" expanded="true" />
-            <element signature="e#12668#12669#0" expanded="true" />
-            <element signature="e#12770#12959#0" expanded="true" />
-            <element signature="e#12958#12959#0" expanded="true" />
-            <element signature="e#33236#33408#0" expanded="true" />
-            <element signature="e#33407#33408#0" expanded="true" />
           </folding>
         </state>
       </provider>
