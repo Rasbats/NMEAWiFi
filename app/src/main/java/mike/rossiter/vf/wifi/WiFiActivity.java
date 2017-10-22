@@ -78,6 +78,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
     boolean isDisconnected;
     public static String ip_host;
     public static String ip_port;
+    public static String api_key;
 
     // AsyncTask object that manages the connection in a separate thread
     WiFiSocketTask wifiTask = null;
@@ -168,6 +169,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
 
         ip_port = preferences.getString("port", "");
         ip_host = preferences.getString("host", "");
+        api_key = preferences.getString("key", "");
 
         if (ip_port.equals("")) {
             alert.showAlertDialog(this,
@@ -358,7 +360,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
                 alert.showAlertDialog(this,
                         "Missing NMEA Connection Data",
                         "Please enter the NMEA Device Address/Port using Preferences", false);
-                return;
             } else {
                 int i_port = Integer.parseInt(port);
                 myNMEATest = new TestNMEAConnectionTask(address, i_port);
@@ -418,7 +419,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * This is in the main UI thread.
      */
     private void TestNMEAConnectionMessage(String msg) {
-        if (msg == "false") {
+        if (msg.equals("false")) {
             // Internet Connection is not present
             alert.showAlertDialog(this,
                     "Connection Failed",
@@ -426,8 +427,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
             //testText.setText(msg);
             isNMEAConnected = false;
             // stop executing code by return
-            return;
-        } else if (msg == "true") {
+        } else if (msg.equals("true")) {
             setStatus("NMEA Connection");
             // Internet Connection is not present
             // alert.showAlertDialog(this,
@@ -437,7 +437,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
             //testText.setText(msg);
             isNMEAConnected = true;
             // stop executing code by return
-            return;
         }
     }
 
@@ -446,7 +445,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * We test that a connection can be made.
      * The result of the test is sent back to the main ui thread.
      */
-    public class TestNMEAConnectionTask extends AsyncTask<Void, String, Void> {
+    private class TestNMEAConnectionTask extends AsyncTask<Void, String, Void> {
         // Location of the remote host
         String address;
         int port;
@@ -552,7 +551,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * This is in the main UI thread.
      */
     private void TestInternetMessage(String msg) {
-        if (msg == "false") {
+        if (msg.equals("false")) {
             // Internet Connection is not present
             alert.showAlertDialog(this,
                     "Connection Failed",
@@ -560,8 +559,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
             //testText.setText(msg);
             isVFConnected = false;
             // stop executing code by return
-            return;
-        } else if (msg == "true") {
+        } else if (msg.equals("true")) {
             setStatus("Internet Connected!");
             // Internet Connection is not present
             //alert.showAlertDialog(this,
@@ -571,7 +569,6 @@ public class WiFiActivity extends Activity implements AsyncResponse {
             //testText.setText(msg);
             isVFConnected = true;
             // stop executing code by return
-            return;
         }
     }
 
@@ -580,7 +577,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * We test that a connection can be made.
      * The result of the test is sent back to the main ui thread.
      */
-    public class TestInternetTask extends AsyncTask<Void, String, Void> {
+    private class TestInternetTask extends AsyncTask<Void, String, Void> {
         ConnectionDetector cd;
         // flag for Internet connection status
         Boolean isInternetPresent;
@@ -639,7 +636,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * However, the AsyncTask has a way of sending data back
      * to the UI thread. Under the hood, it is using Threads and Handlers.
      */
-    public class UploadTask extends AsyncTask<Void, String, Void> {
+    private class UploadTask extends AsyncTask<Void, String, Void> {
         File zipFile;
 
         public UploadTask(File zipFile) {
@@ -656,7 +653,16 @@ public class WiFiActivity extends Activity implements AsyncResponse {
                 Log.i(TAG, "Sending file:" + zipFile.getAbsolutePath());
 
                 HttpUrl.Builder urlBuilder = HttpUrl.parse("https://www.venturefarther.com/upload/HandleDirectNMEAUpload.action").newBuilder();
-                urlBuilder.addQueryParameter("key", "rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm");
+                if (!api_key.equals("") ){
+                urlBuilder.addQueryParameter("key", api_key);  //rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm
+                Log.i(TAG, api_key);}                          //rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm
+                else {
+                    alert.showAlertDialog(getApplicationContext(),
+                            "Missing API key",
+                            "Please enter the API key using Preferences", false);
+                    return null;
+                }
+
                 String requestURL = urlBuilder.build().toString();
 
                 MediaType MEDIA_TYPE_ZIP = MediaType.parse("application/zip");
@@ -676,7 +682,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
                         .post(requestBody)
                         .build();
 
-                Response response = null;
+                Response response;
                 try {
                     response = client.newCall(request).execute();
                     Log.i(TAG,response.body().string());
@@ -720,7 +726,7 @@ public class WiFiActivity extends Activity implements AsyncResponse {
      * main UI thread is not blocked. However, the AsyncTask has a way of sending data back
      * to the UI thread. Under the hood, it is using Threads and Handlers.
      */
-    public class WiFiSocketTask extends AsyncTask<Object, Object, File> {
+    private class WiFiSocketTask extends AsyncTask<Object, Object, File> {
         public AsyncResponse delegate = null;
 
         // Location of the remote host
