@@ -654,8 +654,8 @@ public class WiFiActivity extends Activity implements AsyncResponse {
 
                 HttpUrl.Builder urlBuilder = HttpUrl.parse("https://www.venturefarther.com/upload/HandleDirectNMEAUpload.action").newBuilder();
                 if (!api_key.equals("") ){
-                urlBuilder.addQueryParameter("key", api_key);  //rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm
-                Log.i(TAG, api_key);}                          //rlOhQw9gQeboCB6VWw9Y0TrEAG0yEHmm
+                urlBuilder.addQueryParameter("key", api_key);
+                Log.i(TAG, api_key);}
                 else {
                     alert.showAlertDialog(getApplicationContext(),
                             "Missing API key",
