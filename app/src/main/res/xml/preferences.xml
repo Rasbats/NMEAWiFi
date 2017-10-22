@@ -14,5 +14,12 @@
         android:singleLine="true"
         android:summary="Provide the ip port of the NMEA device"
         android:title="NMEA Port" />
+    <EditTextPreference
+        android:defaultValue="1"
+        android:key="key"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Provide your API key"
+        android:title="API key" />
 
 </PreferenceScreen>
